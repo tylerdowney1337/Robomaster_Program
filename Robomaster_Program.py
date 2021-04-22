@@ -136,7 +136,19 @@ def fire_room_2():
     pass
 
 def person_room_2():
-    pass
+    vision_ctrl.disable_detection(rm_define.vision_detection_marker)
+    vision_ctrl.enable_detection(rm_define.vision_detection_people)
+    chassis_ctrl.rotate_with_degree(rm_define.anticlockwise, 90)
+    chassis_ctrl.move_with_distance(0, 4)
+    chassis_ctrl.move_with_distance(-90, 1.6)
+    gimbal_ctrl.rotate_with_degree(rm_define.gimbal_up, 30)
+    person_detected = vision_ctrl.check_condition(rm_define.cond_recognized_people)
+    if person_detected:
+        media_ctrl.play_sound(rm_define.media_custom_audio_1, wait_complete_flag=True)
+        time.sleep(2)
+        chassis_ctrl.move_with_distance(90, 1.6)
+        chassis_ctrl.move_with_distance(180, 4)
+        chassis_ctrl.rotate_with_degree(rm_define.clockwise, 90)
 
 
 ### ROOM 3 ###

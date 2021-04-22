@@ -1,7 +1,6 @@
 ### CONSTANTS ###
 start = False
 
-
 ### MAIN MOVEMENTS ###
 def start_to_one():
     # Move 7.4 m forward
@@ -161,7 +160,19 @@ def fire_room_3():
         chassis_ctrl.rotate_with_degree(rm_define.clockwise, 90)
 
 def person_room_3():
-    pass
+    vision_ctrl.disable_detection(rm_define.vision_detection_marker)
+    vision_ctrl.enable_detection(rm_define.vision_detection_people)
+    chassis_ctrl.rotate_with_degree(rm_define.anticlockwise, 90)
+    chassis_ctrl.move_with_distance(0, 4)
+    chassis_ctrl.move_with_distance(90, 1.6)
+    gimbal_ctrl.rotate_with_degree(rm_define.gimbal_up, 30)
+    person_detected = vision_ctrl.check_condition(rm_define.cond_recognized_people)
+    if person_detected:
+        media_ctrl.play_sound(rm_define.media_custom_audio_1, wait_complete_flag=True)
+        time.sleep(2)
+        chassis_ctrl.move_with_distance(-90, 1.6)
+        chassis_ctrl.move_with_distance(-180, 4)
+        chassis_ctrl.rotate_with_degree(rm_define.clockwise, -90)
 
 
 ### ROOM 4 ###
@@ -186,7 +197,20 @@ def fire_room_4():
         gimbal_ctrl.recenter()
 
 def person_room_4():
-    pass
+    vision_ctrl.disable_detection(rm_define.vision_detection_marker)
+    vision_ctrl.enable_detection(rm_define.vision_detection_people)
+    chassis_ctrl.rotate_with_degree(rm_define.anticlockwise, 90)
+    chassis_ctrl.move_with_distance(0, 3.7)
+    chassis_ctrl.move_with_distance(90, 1.55)
+    gimbal_ctrl.rotate_with_degree(rm_define.gimbal_up, 30)
+    person_detected = vision_ctrl.check_condition(rm_define.cond_recognized_people)
+    if person_detected:
+        print("PERSON DETECTED")
+        media_ctrl.play_sound(rm_define.media_custom_audio_1, wait_complete_flag=True)
+        time.sleep(2)
+        chassis_ctrl.move_with_distance(-90, 1.55)
+        chassis_ctrl.move_with_distance(-180, 3.7)
+        chassis_ctrl.rotate_with_degree(rm_define.clockwise, 270)
 
 
 def start():

@@ -133,7 +133,23 @@ def person_room_1():
 
 ### ROOM 2 ###
 def fire_room_2():
-    pass
+    chassis_ctrl.rotate_with_degree(rm_define.anticlockwise, 90)
+    chassis_ctrl.move_with_distance(0, 4.8)
+    chassis_ctrl.move_with_distance(-90, 2.6)
+    gimbal_ctrl.rotate_with_degree(rm_define.gimbal_up, 30)
+    vision_ctrl.set_marker_detection_distance(1)
+    vision_ctrl.detect_marker_and_aim(rm_define.marker_number_five)
+    detected_marker = vision_ctrl.get_marker_detection_info()
+    if detected_marker[1] == 15:
+        media_ctrl.play_sound(rm_define.media_custom_audio_0, wait_for_complete=False)
+        time.sleep(1.25)
+        led_ctrl.gun_led_on()
+        gun_ctrl.fire_once()
+        led_ctrl.gun_led_off()
+        gimbal_ctrl.recenter()
+        chassis_ctrl.move_with_distance(90, 2.6)
+        chassis_ctrl.move_with_distance(180, 4.8)
+        chassis_ctrl.rotate_with_degree(rm_define.clockwise, 90)
 
 def person_room_2():
     vision_ctrl.disable_detection(rm_define.vision_detection_marker)

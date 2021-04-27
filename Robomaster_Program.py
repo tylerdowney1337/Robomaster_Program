@@ -1,6 +1,3 @@
-### CONSTANTS ###
-start = False
-
 ### MAIN MOVEMENTS ###
 def start_to_one():
     # Move 7.4 m forward
@@ -12,10 +9,11 @@ def start_to_one():
 def one_to_two():
     # Move to corner (9.25 m)
     chassis_ctrl.move_with_distance(0, 5)
-    chassis_ctrl.move_with_distance(0, 4.25)
+    chassis_ctrl.move_with_distance(0, 4.35)
     time.sleep(2)
     # Turn 90 degrees to the left
     chassis_ctrl.rotate_with_degree(rm_define.anticlockwise, 90)
+    gimbal_ctrl.recenter()
     # Move to second door (7.2 m)
     chassis_ctrl.move_with_distance(0, 5)
     chassis_ctrl.move_with_distance(0, 2.2)
@@ -62,7 +60,7 @@ def two_to_one():
     gimbal_ctrl.recenter()
     # Move to the first door
     chassis_ctrl.move_with_distance(0, 5)
-    chassis_ctrl.move_with_distance(0, 4.25)
+    chassis_ctrl.move_with_distance(0, 4.35)
     time.sleep(2)
 
 
@@ -76,7 +74,7 @@ def one_to_start():
 ### SCAN ROOM AND IGNORE FUNCTIONS ###
 def scan_room():
     vision_ctrl.enable_detection(rm_define.vision_detection_marker)
-    vision_ctrl.set_marker_detection_distance(1)
+    vision_ctrl.set_marker_detection_distance(1.5)
     gimbal_ctrl.rotate_with_degree(rm_define.gimbal_left, 90)
     detected_marker = vision_ctrl.get_marker_detection_info()
     print(detected_marker)
@@ -96,21 +94,23 @@ def turn_180():
 ### ROOM 1 ###
 def fire_room_1():
     chassis_ctrl.rotate_with_degree(rm_define.anticlockwise, 90)
-    chassis_ctrl.move_with_distance(0, 3)
-    chassis_ctrl.move_with_distance(-90, 1.4)
+    chassis_ctrl.move_with_distance(0, 4.25)
+    chassis_ctrl.move_with_distance(-90, 0.75)
     gimbal_ctrl.rotate_with_degree(rm_define.gimbal_up, 30)
     vision_ctrl.set_marker_detection_distance(1)
+    vision_ctrl.set_marker_detection_distance(1.5)
     vision_ctrl.detect_marker_and_aim(rm_define.marker_number_five)
-    detected_marker = vision_ctrl.get_marker_detection_info()
-    if detected_marker[1] == 15:
+    detected_marker_1 = vision_ctrl.get_marker_detection_info()
+    print(detected_marker_1)
+    if detected_marker_1[1] == 15:
         media_ctrl.play_sound(rm_define.media_custom_audio_0, wait_for_complete=False)
         time.sleep(1.25)
         led_ctrl.gun_led_on()
         gun_ctrl.fire_once()
         led_ctrl.gun_led_off()
         gimbal_ctrl.recenter()
-        chassis_ctrl.move_with_distance(90, 1.4)
-        chassis_ctrl.move_with_distance(180, 3)
+        chassis_ctrl.move_with_distance(90, 0.75)
+        chassis_ctrl.move_with_distance(180, 4.25)
         chassis_ctrl.rotate_with_degree(rm_define.clockwise, 90)
 
 
@@ -118,26 +118,26 @@ def person_room_1():
     vision_ctrl.disable_detection(rm_define.vision_detection_marker)
     vision_ctrl.enable_detection(rm_define.vision_detection_people)
     chassis_ctrl.rotate_with_degree(rm_define.anticlockwise, 90)
-    chassis_ctrl.move_with_distance(0, 1)  # 3 m
-    chassis_ctrl.move_with_distance(-90, 1.25)  # 1.4 m
+    chassis_ctrl.move_with_distance(0, 4.25)  # 3 m
+    chassis_ctrl.move_with_distance(-90, 0.75)  # 1.4 m
     gimbal_ctrl.rotate_with_degree(rm_define.gimbal_up, 30)
     person_detected = vision_ctrl.check_condition(rm_define.cond_recognized_people)
     if person_detected:
         print("PERSON DETECTED")
         media_ctrl.play_sound(rm_define.media_custom_audio_1, wait_complete_flag=True)
         time.sleep(2)
-        chassis_ctrl.move_with_distance(90, 1.25)  # 1.4 m
-        chassis_ctrl.move_with_distance(180, 1)  # 3 m
+        chassis_ctrl.move_with_distance(90, 0.75)  # 1.4 m
+        chassis_ctrl.move_with_distance(180, 4.25)  # 3 m
         chassis_ctrl.rotate_with_degree(rm_define.clockwise, 270)
 
 
 ### ROOM 2 ###
 def fire_room_2():
     chassis_ctrl.rotate_with_degree(rm_define.anticlockwise, 90)
-    chassis_ctrl.move_with_distance(0, 4.8)
-    chassis_ctrl.move_with_distance(-90, 2.6)
+    chassis_ctrl.move_with_distance(0, 3.5)
+    chassis_ctrl.move_with_distance(-90, 1.8)
     gimbal_ctrl.rotate_with_degree(rm_define.gimbal_up, 30)
-    vision_ctrl.set_marker_detection_distance(1)
+    vision_ctrl.set_marker_detection_distance(1.5)
     vision_ctrl.detect_marker_and_aim(rm_define.marker_number_five)
     detected_marker = vision_ctrl.get_marker_detection_info()
     if detected_marker[1] == 15:
@@ -147,23 +147,26 @@ def fire_room_2():
         gun_ctrl.fire_once()
         led_ctrl.gun_led_off()
         gimbal_ctrl.recenter()
-        chassis_ctrl.move_with_distance(90, 2.6)
-        chassis_ctrl.move_with_distance(180, 4.8)
+        chassis_ctrl.move_with_distance(90, 1.8)
+        chassis_ctrl.move_with_distance(180, 3.5)
         chassis_ctrl.rotate_with_degree(rm_define.clockwise, 90)
+
 
 def person_room_2():
     vision_ctrl.disable_detection(rm_define.vision_detection_marker)
     vision_ctrl.enable_detection(rm_define.vision_detection_people)
     chassis_ctrl.rotate_with_degree(rm_define.anticlockwise, 90)
-    chassis_ctrl.move_with_distance(0, 4)
-    chassis_ctrl.move_with_distance(-90, 1.6)
+    chassis_ctrl.move_with_distance(0, 3.25)
+    chassis_ctrl.move_with_distance(-90, 1.8)
     gimbal_ctrl.rotate_with_degree(rm_define.gimbal_up, 30)
-    person_detected = vision_ctrl.check_condition(rm_define.cond_recognized_people)
-    if person_detected:
+    person_detected_2 = vision_ctrl.check_condition(rm_define.cond_recognized_people)
+    print(person_detected_2)
+    if person_detected_2:
+        print("PERSON DETECTED")
         media_ctrl.play_sound(rm_define.media_custom_audio_1, wait_complete_flag=True)
         time.sleep(2)
-        chassis_ctrl.move_with_distance(90, 1.6)
-        chassis_ctrl.move_with_distance(180, 4)
+        chassis_ctrl.move_with_distance(90, 1.8)
+        chassis_ctrl.move_with_distance(180, 3.25)
         chassis_ctrl.rotate_with_degree(rm_define.clockwise, 90)
 
 
@@ -186,6 +189,7 @@ def fire_room_3():
         chassis_ctrl.move_with_distance(-90, 1.6)
         chassis_ctrl.move_with_distance(180, 4)
         chassis_ctrl.rotate_with_degree(rm_define.clockwise, 90)
+
 
 def person_room_3():
     vision_ctrl.disable_detection(rm_define.vision_detection_marker)
@@ -224,6 +228,7 @@ def fire_room_4():
         chassis_ctrl.rotate_with_degree(rm_define.clockwise, 90)
         gimbal_ctrl.recenter()
 
+
 def person_room_4():
     vision_ctrl.disable_detection(rm_define.vision_detection_marker)
     vision_ctrl.enable_detection(rm_define.vision_detection_people)
@@ -242,6 +247,7 @@ def person_room_4():
 
 
 def start():
+    start = False
     robot_ctrl.set_mode(rm_define.robot_mode_free)
     # Set chassis translation speed to 1 m/s
     chassis_ctrl.set_trans_speed(1)
@@ -251,7 +257,7 @@ def start():
     if marker == 11:
         fire_room_1()
         one_to_two()
-    elif marker == 12:
+    elif marker == 14:
         ignore_room()
         one_to_two()
     elif marker == 13:

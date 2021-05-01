@@ -9,10 +9,10 @@ def start_to_one():
 def one_to_two():
     # Move to corner (9.25 m)
     chassis_ctrl.move_with_distance(0, 5)
-    chassis_ctrl.move_with_distance(0, 4)
+    chassis_ctrl.move_with_distance(0, 4.1)
     time.sleep(2)
     # Turn 90 degrees to the left
-    chassis_ctrl.rotate_with_degree(rm_define.anticlockwise, 90)
+    chassis_ctrl.rotate_with_degree(rm_define.anticlockwise, 91)
     gimbal_ctrl.recenter()
     # Move to second door (7.2 m)
     chassis_ctrl.move_with_distance(0, 5)
@@ -23,7 +23,7 @@ def one_to_two():
 def two_to_three():
     # Move to the third door (8.85 m)
     chassis_ctrl.move_with_distance(0, 5)
-    chassis_ctrl.move_with_distance(0, 3.8)
+    chassis_ctrl.move_with_distance(0, 3.9)
     time.sleep(2)
 
 
@@ -31,7 +31,7 @@ def three_to_four():
     # Move to the fourth door (10.2 m)
     chassis_ctrl.move_with_distance(0, 5)
     chassis_ctrl.move_with_distance(0, 5)
-    chassis_ctrl.move_with_distance(0, 0.2)
+    chassis_ctrl.move_with_distance(0, 0.1)
     time.sleep(2)
 
 
@@ -39,14 +39,14 @@ def four_to_three():
     # Move to the third door (10.2)
     chassis_ctrl.move_with_distance(0, 5)
     chassis_ctrl.move_with_distance(0, 5)
-    chassis_ctrl.move_with_distance(0, 0.2)
+    chassis_ctrl.move_with_distance(0, 0.1)
     time.sleep(2)
 
 
 def three_to_two():
     # Move to the second door (8.85 m)
     chassis_ctrl.move_with_distance(0, 5)
-    chassis_ctrl.move_with_distance(0, 3.8)
+    chassis_ctrl.move_with_distance(0, 3.9)
     time.sleep(2)
 
 
@@ -56,11 +56,11 @@ def two_to_one():
     chassis_ctrl.move_with_distance(0, 2.2)
     time.sleep(2)
     # Rotate 90 degrees right
-    chassis_ctrl.rotate_with_degree(rm_define.clockwise, 90)
+    chassis_ctrl.rotate_with_degree(rm_define.clockwise, 91.5)
     gimbal_ctrl.recenter()
     # Move to the first door
     chassis_ctrl.move_with_distance(0, 5)
-    chassis_ctrl.move_with_distance(0, 3.9)
+    chassis_ctrl.move_with_distance(0, 4.1)
     time.sleep(2)
 
 
@@ -149,8 +149,8 @@ def fire_room_2():
         led_ctrl.gun_led_off()
         gimbal_ctrl.recenter()
         chassis_ctrl.move_with_distance(90, 1)
-        chassis_ctrl.move_with_distance(180, 4)
-        chassis_ctrl.rotate_with_degree(rm_define.clockwise, 90)
+        chassis_ctrl.move_with_distance(180, 4.1)
+        chassis_ctrl.rotate_with_degree(rm_define.clockwise, 92)
 
 
 def person_room_2():
@@ -175,7 +175,7 @@ def person_room_2():
 ### ROOM 3 ###
 def fire_room_3():
     chassis_ctrl.rotate_with_degree(rm_define.anticlockwise, 90)
-    chassis_ctrl.move_with_distance(0, 2.5)
+    chassis_ctrl.move_with_distance(0, 2.3)
     chassis_ctrl.move_with_distance(90, 1)
     chassis_ctrl.rotate_with_degree(rm_define.clockwise, 180)
     gimbal_ctrl.recenter()
@@ -200,8 +200,8 @@ def person_room_3():
     vision_ctrl.disable_detection(rm_define.vision_detection_marker)
     vision_ctrl.enable_detection(rm_define.vision_detection_people)
     chassis_ctrl.rotate_with_degree(rm_define.anticlockwise, 90)
-    chassis_ctrl.move_with_distance(0, 4)
-    chassis_ctrl.move_with_distance(90, 1.6)
+    chassis_ctrl.move_with_distance(0, 2.5)
+    chassis_ctrl.move_with_distance(90, 1)
     gimbal_ctrl.rotate_with_degree(rm_define.gimbal_up, 30)
     person_detected_3 = vision_ctrl.check_condition(rm_define.cond_recognized_people)
     if person_detected_3:
@@ -209,9 +209,9 @@ def person_room_3():
         vision_ctrl.disable_detection(rm_define.vision_detection_people)
         media_ctrl.play_sound(rm_define.media_custom_audio_1, wait_complete_flag=True)
         time.sleep(2)
-        chassis_ctrl.move_with_distance(-90, 1.6)
-        chassis_ctrl.move_with_distance(-180, 4)
-        chassis_ctrl.rotate_with_degree(rm_define.anticlockwise, 90)
+        chassis_ctrl.move_with_distance(-90, 1)
+        chassis_ctrl.move_with_distance(-180, 2.5)
+        chassis_ctrl.rotate_with_degree(rm_define.anticlockwise, 91)
 
 
 ### ROOM 4 ###
@@ -275,7 +275,8 @@ def start():
     elif marker == 13:
         person_room_1()
         one_to_start()
-        turn_180()
+        time.sleep(5)
+        gimbal_ctrl.recenter()
         start = True
     # ROOM 2
     if start == True:
@@ -285,6 +286,7 @@ def start():
         marker = scan_room()
         if marker == 11:
             fire_room_2()
+            gimbal_ctrl.recenter()
             two_to_three()
         elif marker == 12:
             ignore_room()
@@ -293,12 +295,14 @@ def start():
             person_room_2()
             two_to_one()
             one_to_start()
-            turn_180()
+            time.sleep(5)
+            gimbal_ctrl.recenter()
             start = True
     else:
         marker = scan_room()
         if marker == 11:
             fire_room_2()
+            gimbal_ctrl.recenter()
             two_to_three()
         elif marker == 12:
             ignore_room()
@@ -307,7 +311,8 @@ def start():
             person_room_2()
             two_to_one()
             one_to_start()
-            turn_180()
+            time.sleep(5)
+            gimbal_ctrl.recenter()
             start = True
     # ROOM 3
     if start == True:
@@ -327,6 +332,7 @@ def start():
             three_to_two()
             two_to_one()
             one_to_start()
+            time.sleep(5)
             start = True
     else:
         marker = scan_room()
@@ -341,9 +347,12 @@ def start():
             three_to_two()
             two_to_one()
             one_to_start()
+            time.sleep(5)
+            gimbal_ctrl.recenter()
             start = True
     # ROOM 4
     if start == True:
+        gimbal_ctrl.recenter()
         start_to_one()
         one_to_two()
         two_to_three()
@@ -355,18 +364,22 @@ def start():
             three_to_two()
             two_to_one()
             one_to_start()
+            media_ctrl.play_sound(rm_define.media_custom_audio_2)
         elif marker == 12:
             ignore_room()
             four_to_three()
             three_to_two()
             two_to_one()
             one_to_start()
+            media_ctrl.play_sound(rm_define.media_custom_audio_2)
         elif marker == 13:
             person_room_4()
             four_to_three()
             three_to_two()
             two_to_one()
+            chassis_ctrl.move_degree_with_speed(0, 0.2)
             one_to_start()
+            media_ctrl.play_sound(rm_define.media_custom_audio_2)
     else:
         marker = scan_room()
         if marker == 11:
@@ -375,15 +388,18 @@ def start():
             three_to_two()
             two_to_one()
             one_to_start()
+            media_ctrl.play_sound(rm_define.media_custom_audio_2)
         elif marker == 12:
             ignore_room()
             four_to_three()
             three_to_two()
             two_to_one()
             one_to_start()
+            media_ctrl.play_sound(rm_define.media_custom_audio_2)
         elif marker == 13:
             person_room_4()
             four_to_three()
             three_to_two()
             two_to_one()
             one_to_start()
+            media_ctrl.play_sound(rm_define.media_custom_audio_2)
